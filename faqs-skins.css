@@ -1,0 +1,223 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fffde7; /* Light Yellow */
+    font-size: 16px;
+}
+
+header {
+    background-color: #ffb74d; /* Lighter Orange */
+    color: white;
+    text-align: center;
+    padding: 0rem 0;
+    font-size: 1.5rem; /* Header font size */
+}
+
+header img {
+    max-width: 80%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    max-height: 100px; /* Adjust height as needed */
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    background-color: #ffee58; /* Bright Yellow */
+    padding: 0.8rem;
+    font-size: 0.8rem; /* Navigation font size */
+    
+}
+
+nav a {
+    margin: 0 1rem;
+    text-decoration: none;
+    color: #33691e; /* Dark Green */
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #ff7043; /* Medium Orange */
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f0f4c3; /* Light Green */
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #e6ee9c; /* Soft Green */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #fff9c4; /* Light Yellow */
+    padding: 0rem;
+}
+
+.content {
+    text-align: center;
+    max-width: 900px;
+    width: 70%;
+    padding: 2rem;
+    background-color: #fff59d; /* Soft Yellow */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+
+    margin-bottom: 50px;
+}
+
+.faq {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.faq .question {
+    background-color: #fff9c4; /* Soft Yellow */
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #cccccc;
+    position: relative;
+}
+
+.faq .question h3 {
+    font-size: 17px;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq .question p {
+    margin: 10px 0 0;
+    font-size: 15px;
+    display: none;
+}
+
+.faq .question:hover {
+    background-color: #fffde7; /* Lighter Yellow */
+}
+
+.toggle-icon {
+    width: 35px;
+    height: 35px;
+    transition: transform 0.3s ease;
+}
+    
+
+/* Hero Section Styles */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 5in; /* Set the height to 5 inches */
+    text-align: center;
+    color: white;
+    overflow: hidden; /* Ensures content doesn't overflow the hero section */
+}
+
+.hero-slide {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: fade 0.8s ease-in-out;
+}
+
+.hero-slide.active {
+    display: block;
+    position: relative;
+}
+
+@keyframes fade {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image fits the hero section while maintaining aspect ratio */
+}
+
+.hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 2rem;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+}
+
+.cta-button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    background-color: #66bb6a; /* Green */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.cta-button:hover {
+    background-color: #558b2f; /* Darker Green */
+}
+
+/* Hero Controls Styles */
+.hero-controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+}
+
+.hero-controls button {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+.hero-controls button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}

@@ -1,0 +1,214 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fffde7; /* Light Yellow */
+    font-size: 16px;
+}
+
+/* Header Styles */
+header {
+    background-color: #ffb74d; /* Lighter Orange */
+    color: white;
+    text-align: center;
+    padding: 0rem 0;
+    font-size: 1.5rem; /* Header font size */
+}
+
+header img {
+    max-width: 80%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    max-height: 100px; /* Adjust height as needed */
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    background-color: #ffee58; /* Bright Yellow */
+    padding: 0.8rem;
+    font-size: 0.8rem; /* Navigation font size */
+    
+}
+
+nav a {
+    margin: 0 1rem;
+    text-decoration: none;
+    color: #33691e; /* Dark Green */
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #ff7043; /* Medium Orange */
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f0f4c3; /* Light Green */
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #e6ee9c; /* Soft Green */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #fff9c4; /* Light Yellow */
+    padding: 2rem;
+}
+
+.content {
+    text-align: center;
+    max-width: 1200px;
+    width: 120%;
+    padding: 2rem;
+    background-color: #fff59d; /* Soft Yellow */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    background-color: #66bb6a; /* Green */
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    position: static;
+    bottom: 0;
+    width: 100%;
+}
+
+/* New CSS for amenities */
+.amenities-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.amenity {
+    background-color: #fff59d; /* Soft Yellow */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 1rem;
+}
+
+.amenity img {
+    width: 330px;  /* Set the desired width */
+    height: 220px; /* Set the desired height */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    border-radius: 8px; /* Optional: adds rounded corners */
+}
+
+.amenity h3 {
+    color: #33691e; /* Dark Green */
+    margin: 1rem 0;
+}
+
+#amenities-form {
+    display: flex;
+    flex-direction: row; /* Align items horizontally */
+    align-items: center; /* Center items vertically */
+    gap: 0.5rem; /* Space between items */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    justify-content: center; /* Center items horizontally */
+}
+
+#amenities-form label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Adjust this value to control the space between checkbox and label */
+    margin: 0;
+    padding: 0;
+}
+
+#amenities-form input[type="checkbox"] {
+    display: none; /* Hide the default checkbox */
+}
+
+#amenities-form input[type="checkbox"] + span {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-color: #fff; /* Default background color */
+    border: 2px solid #33691e; /* Border color */
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+}
+
+#amenities-form input[type="checkbox"]:checked + span {
+    background-color: #ffb74d; /* Checked background color */
+    border-color: #ffb74d; /* Checked border color */
+}
+
+#amenities-form input[type="checkbox"]:checked + span::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    position: absolute;
+    top: 2px;
+    left: 5px;
+    transform: rotate(45deg);
+}
+
+/* Mobile Styles */
+@media (max-width: 600px) {
+    header {
+        font-size: 1.1rem;
+    }
+
+    nav {
+        flex-direction: column;
+        font-size: 0.9rem;
+    }
+
+    nav a {
+        margin: 0.2rem 0;
+    }
+
+    .amenities-container {
+        grid-template-columns: 1fr;
+    }
+
+    .content {
+        padding: 1rem;
+    }
+
+    footer {
+        padding: 0.8rem;
+    }
+}

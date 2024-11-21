@@ -1,0 +1,488 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fffde7; /* Light Yellow */
+    font-size: 16px;
+}
+
+/* Existing CSS */
+header {
+    background-color: #ffb74d; /* Lighter Orange */
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 1.5rem; /* Header font size */
+}
+
+/* Add this to adjust header image size */
+header img {
+    max-width: 40%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    max-height: 50px; /* Adjust height as needed */
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    background-color: #ffee58; /* Bright Yellow */
+    padding: 0.8rem;
+    font-size: 0.8rem; /* Navigation font size */
+    
+}
+
+nav a {
+    margin: 0 1rem;
+    text-decoration: none;
+    color: #33691e; /* Dark Green */
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #ff7043; /* Medium Orange */
+}
+
+/* Dropdown container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f0f4c3; /* Light Green */
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #e6ee9c; /* Soft Green */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #fff9c4; /* Light Yellow */
+    padding: 2rem;
+}
+
+.hero {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+
+.hero img {
+    width: 100%;
+    height: auto;
+}
+
+.hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.cta-button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    background-color: #66bb6a; /* Green */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.cta-button:hover {
+    background-color: #558b2f; /* Darker Green */
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff7043; /* Medium Orange */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.close-button:hover {
+    background-color: #d84315; /* Darker Orange */
+}
+
+.shortcuts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 2rem;
+}
+
+.shortcut {
+    background-color: #fff59d; /* Soft Yellow */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 1rem;
+    flex: 1 1 200px;
+    max-width: 250px;
+    padding: 1rem;
+}
+
+.shortcut img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px 10px 0 0;
+}
+
+.shortcut h3 {
+    color: #33691e; /* Dark Green */
+    margin: 1rem 0;
+}
+
+.shortcut p {
+    color: #666; /* Gray */
+    margin: 0.5rem 0 1rem;
+}
+
+.shortcut a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #66bb6a; /* Green */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.shortcut a:hover {
+    background-color: #558b2f; /* Darker Green */
+}
+
+footer {
+    background-color: #66bb6a; /* Green */
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Step indicator */
+.step-indicator {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.step {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    margin: 0 5px;
+    background-color: #ccc;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: bold;
+}
+
+.step.active {
+    background-color: #ffb74d; /* Lighter Orange */
+}
+
+.step.completed {
+    background-color: #66bb6a; /* Green */
+}
+
+/* Dont remove this
+this has function on different html files */
+.content {
+    text-align: center;
+    max-width: 900px;
+    width: 100%;
+    padding: 2rem;
+    background-color: #fff59d; /* Soft Yellow */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Styling */
+#reservation-form label {
+    display: inline-block;
+    width: 100px;
+    margin-bottom: 10px;
+}
+
+#reservation-form input, #reservation-form textarea {
+    display: inline-block;
+    width: calc(100% - 120px);
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#reservation-form input[type="text"], #reservation-form input[type="email"], #reservation-form input[type="number"], #reservation-form input[type="date"], #reservation-form select {
+    width: calc(100% - 120px);
+}
+
+#reservation-form textarea {
+    height: 100px;
+    resize: none;
+}
+
+#reservation-form button {
+    padding: 10px 20px;
+    background-color: #66bb6a; /* Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#reservation-form button:hover {
+    background-color: #558b2f; /* Darker Green */
+}
+
+#reservation-form br {
+    clear: both;
+}
+
+
+/* new added on reservation*/
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input, select, textarea {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 300px; /* Adjust width as needed */
+}
+
+textarea {
+    height: 100px; /* Adjust height as needed */
+}
+
+button {
+    margin-top: 20px;
+}
+
+
+/* faq css */
+/* FAQ Styles */
+.faq {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.faq .question {
+    background-color: #fff9c4; /* Soft Yellow */
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #cccccc;
+    position: relative;
+}
+
+.faq .question h3 {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq .question p {
+    margin: 10px 0 0;
+    display: none;
+}
+
+.faq .question:hover {
+    background-color: #fffde7; /* Lighter Yellow */
+}
+
+.toggle-icon {
+    width: 35px;
+    height: 35px;
+    transition: transform 0.3s ease;
+}
+
+
+/* New CSS for alternating content layout */
+.activity {
+    display: flex;
+    align-items: center;
+    margin: 2rem 0;
+    padding: 2rem;
+    
+}
+
+.activity img {
+    width: 50%;
+    height: auto;
+    border-radius: 10px;
+    margin: 1rem;
+}
+
+.activity .text {
+    width: 50%;
+    padding: 1rem;
+    
+}
+
+.activity.reverse {
+    flex-direction: row-reverse;
+    padding: 2rem;
+
+}
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fffde7; /* Light Yellow */
+    font-size: 16px;
+}
+
+header {
+    background-color: #ffb74d; /* Lighter Orange */
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 1.5rem; /* Header font size */
+}
+
+header img {
+    max-width: 40%;
+    height: auto;
+    display: block;
+    margin: 0 auto; /* Center align if needed */
+    max-height: 90px; /* Adjust height as needed */
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    background-color: #ffee58; /* Bright Yellow */
+    padding: 1rem;
+    font-size: 1.1rem; /* Navigation font size */
+}
+
+nav a {
+    margin: 0 1rem;
+    text-decoration: none;
+    color: #33691e; /* Dark Green */
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #ff7043; /* Medium Orange */
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f0f4c3; /* Light Green */
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #e6ee9c; /* Soft Green */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #fff9c4; /* Light Yellow */
+    padding: 2rem;
+}
+
+.content {
+    text-align: center;
+    max-width: 900px;
+    width: 100%;
+    padding: 2rem;
+    background-color: #fff59d; /* Soft Yellow */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    background-color: #66bb6a; /* Green */
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    position: static;
+    bottom: 0;
+    width: 100%;
+}
+
+
