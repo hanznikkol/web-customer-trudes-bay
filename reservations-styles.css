@@ -110,12 +110,12 @@ footer {
 
 .container {
     position: relative;
-    max-width: 900px;
-    width: 100%;
+    width:60%;
+    height: auto;
     border-radius: 6px;
-    padding: 30px;
+    padding: 30px 40px 20px 20px;
     margin: 0 15px;
-    background-color: #fff;
+    background-color: white;
     box-shadow: 0 5px 10px rgba(0,0,0,0.1);
   }
   
@@ -124,12 +124,13 @@ footer {
     font-size: 20px;
     font-weight: 600;
     color: #333;
+    padding-left: 14px;
   }
   
   .container h1::before {
     content: "";
     position: absolute;
-    left: 0;
+    left: 14px;
     bottom: -2px;
     height: 3px;
     width: 70px;
@@ -140,15 +141,15 @@ footer {
   .container form {
     position: relative;
     margin: 16px;
-    min-height: 490px;
-    background-color: #fff;
-    overflow: hidden;
-    
+    width: 100%;
+    height: 60vh;
+    overflow: hidden; 
   }
   
   .container form .form {
     position: absolute;
-    background-color: #fff;
+    width: 100%;
+    height: 60vh;
     transition: 0.3s ease;
   }
   
@@ -306,7 +307,8 @@ form .fields .input-secondfields {
     border: 1px solid #aaa;
     padding: 0 15px;
     height: 170px;
-    width: 804px;
+    resize: none;
+    width: 100%;
     margin: 8px 0;
 }
 
@@ -456,26 +458,6 @@ form .fields .input-secondfields {
     color: #2e2e2e;
 }
 
-  
-  @media (max-width: 750px) {
-    .container form {
-        overflow-y: scroll;
-    }
-    .container form::-webkit-scrollbar {
-      display: none;
-  }
-    form .fields .input-fields {
-      width: calc(100% / 2 - 15px);
-    }
-  }
-  
-  @media (max-width: 550px) {
-    form .fields .input-fields {
-      width: 100%;
-    }
-  }
-
-
 /* Modal styles */
 .modal {
   display: none; /* Hidden by default */
@@ -624,4 +606,97 @@ form .fields .input-secondfields {
   object-fit: contain; /* Maintains the image aspect ratio */
 }
 
+.svg-hamburger {
+  display: none;
+}
 
+
+@media screen and (max-width: 768px) {
+   /*Navigation*/
+   header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+  }
+  nav {
+    display: none;
+    flex-direction: column;
+    font-size: 0.9rem;
+  }
+
+  nav.active {
+    display: flex; /* Show navigation when active */
+  }
+
+  nav a {
+    margin: 0.2rem 0;
+  }
+
+  .svg-hamburger {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .svg-hamburger:hover{
+    cursor: pointer;
+  }
+  
+
+  /*Form*/
+  .details{
+    width: 100%;
+  }
+
+  .container {
+    padding: 30px 30px 20px 10px;
+    width: 100%;
+    height: auto;
+  }
+
+  .input-notefields textarea {
+    outline: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    padding: 15px 0px;
+    height: 20rem;
+    width: 100%;
+    margin: 8px 0;
+  }
+  .container form {
+    width: 100%;
+    height: 100vh;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+  }
+
+  /*Second Form*/
+  .reservation-type {
+    overflow-x: auto;
+  }
+  .option {
+    margin: 0px .6rem;
+  }
+  .container form .fields { 
+    flex-direction: column;
+    align-items: flex-start;
+    justify-items: center;
+    width: 100%;
+  }
+  form .fields .input-secondfields {
+    width: 100%;
+  }
+  form .fields .input-fields {
+    width: 100%;
+  }
+  form .fields .input-fields {
+    width: 100%;
+  }
+  
+}

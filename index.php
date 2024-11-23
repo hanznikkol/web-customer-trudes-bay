@@ -43,7 +43,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trudes Bay Beach Resort</title>
-    <link rel="stylesheet" href="indexs-style.css">
+    <link rel="stylesheet" href="indexs-style.css?ver=<?php echo time();?>">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <!--swiper link-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
@@ -55,6 +55,16 @@ $conn->close();
 <body>
     <header>
         <img src="Images/Trudes Bay Strip logo.png" alt="Trudes Bay Beach Resort">
+        <!-- For mobile purpose nav-->
+        <svg class="svg-hamburger" onclick="toggleNavigation()" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.5 42.5H52.5M7.5 30H52.5M7.5 17.5H52.5" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <script>
+            function toggleNavigation() {
+                const navMenu = document.querySelector('nav'); // Select the nav element
+                navMenu.classList.toggle('active'); // Toggle the 'active' class
+            }
+        </script>
     </header>
     <nav>
         <a href="index.php">Home</a>
@@ -108,61 +118,66 @@ $conn->close();
           </div>
         </section>
 
+        <div class="amenities-container">
+            <div class="amenities-title"> 
+                <h2>Amenities and Facilities</h2>
+                <p> Experience the charm of Trudes Bay with our unique accommodations tailored to meet your every need. Whether you're looking for a cozy beachfront cottage, 
+                    an enchanting treehouse stay, or the stylish comfort of our A-frame cabins, your time here will be nothing short of unforgettable. Planning a larger event? 
+                    Our spacious function hall is perfect for family reunions, weddings, or any special celebration. Whatever your occasion, Trudes Bay is the perfect backdrop 
+                    for creating lasting memories in a serene, welcoming environment. Your relaxing escape awaits!</p>
+            </div>
+
+            <!-- Swiper -->
+            <div class="swiper-container swiper">
+                <div class="card-wrapper"> 
+                    <ul class="card-list swiper-wrapper">
+                    <li class="card-item swiper-slide">
+                        <a href="amenities.php" class="card-link">
+                        <img src="Images/room3.jpg" alt="card-image" width="200" height="130">
+                        <p class="badge designer">Room</p>
+                        <h2 class="card-title"> Explore Our Premium Accommodations and Facilities</h2>
+                        
+                        </a>
+                    </li>
+
+                    <li class="card-item swiper-slide">
+                        <a href="amenities.php" class="card-link">
+                        <img src="Images/cottage6.jpg" alt="card-image" width="200" height="130">
+                        <p class="badge developer"> Cottage</p>
+                        <h2 class="card-title">Explore Our Premium Accommodations and Facilities </h2>
+                        
+                        </a>
+                    </li>
+
+                    <li class="card-item swiper-slide">
+                        <a href="amenities.php" class="card-link">
+                        <img src="Images/EVENTHALL.jpg" alt="card-image" width="200" height="130">
+                        <p class="badge marketer"> Event Hall</p>
+                        <h2 class="card-title">Explore Our Premium Accommodations and Facilities </h2>
+                        
+                        </a>
+                    </li>
+
+                    <li class="card-item swiper-slide">
+                        <a href="amenities.php" class="card-link">
+                        <img src="Images/tent.jpg" alt="card-image" width="200" height="130">
+                        <p class="badge gamer"> Tent</p>
+                        <h2 class="card-title">Explore Our Premium Accommodations and Facilities </h2>
+                        
+                        </a>
+                    </li>
+
+                    </ul>
+
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-slide-button swiper-button-prev"></div>
+                    <div class="swiper-slide-button swiper-button-next"></div>
+                </div>
+            </div>
+        </div>
+
         
-        <div class="amenities-title"> 
-            <h2>Amenities and Facilities</h2>
-            <p> Experience the charm of Trudes Bay with our unique accommodations tailored to meet your every need. Whether you're looking for a cozy beachfront cottage, 
-                an enchanting treehouse stay, or the stylish comfort of our A-frame cabins, your time here will be nothing short of unforgettable. Planning a larger event? 
-                Our spacious function hall is perfect for family reunions, weddings, or any special celebration. Whatever your occasion, Trudes Bay is the perfect backdrop 
-                for creating lasting memories in a serene, welcoming environment. Your relaxing escape awaits!</p>
-            </div>
-
-            <div class="container swiper">
-            <div class="card-wrapper"> 
-                <ul class="card-list swiper-wrapper">
-                <li class="card-item swiper-slide">
-                    <a href="amenities.php" class="card-link">
-                    <img src="Images/room3.jpg" alt="card-image" width="200" height="130">
-                    <p class="badge designer">Room</p>
-                    <h2 class="card-title"> Explore Our Premium Accommodations and Facilities</h2>
-                    
-                    </a>
-                </li>
-
-                <li class="card-item swiper-slide">
-                    <a href="amenities.php" class="card-link">
-                    <img src="Images/cottage6.jpg" alt="card-image" width="200" height="130">
-                    <p class="badge developer"> Cottage</p>
-                    <h2 class="card-title">Explore Our Premium Accommodations and Facilities </h2>
-                    
-                    </a>
-                </li>
-
-                <li class="card-item swiper-slide">
-                    <a href="amenities.php" class="card-link">
-                    <img src="Images/EVENTHALL.jpg" alt="card-image" width="200" height="130">
-                    <p class="badge marketer"> Event Hall</p>
-                    <h2 class="card-title">Explore Our Premium Accommodations and Facilities </h2>
-                    
-                    </a>
-                </li>
-
-                <li class="card-item swiper-slide">
-                    <a href="amenities.php" class="card-link">
-                    <img src="Images/tent.jpg" alt="card-image" width="200" height="130">
-                    <p class="badge gamer"> Tent</p>
-                    <h2 class="card-title">Explore Our Premium Accommodations and Facilities </h2>
-                    
-                    </a>
-                </li>
-
-                </ul>
-
-                <div class="swiper-pagination"></div>
-                <div class="swiper-slide-button swiper-button-prev"></div>
-                <div class="swiper-slide-button swiper-button-next"></div>
-            </div>
-            </div>          
+                  
     
 
         <section class="start-section">
@@ -180,12 +195,12 @@ $conn->close();
                     <p>Welcome to Trudes Bay Beach Resort, your ideal escape in Patnanungan, Quezon. </p>
                     <h3>Snorkeling</h3>
                     <p>Welcome to Trudes Bay Beach Resort, your ideal escape in Patnanungan, Quezon. </p>
-                    <h3>island hopping</h3>
+                    <h3>Island hopping</h3>
                     <p>Welcome to Trudes Bay Beach Resort, your ideal escape in Patnanungan, Quezon. </p>
                     <h3>Beach Volleyball</h3>
                     <p>Welcome to Trudes Bay Beach Resort, your ideal escape in Patnanungan, Quezon. </p>
                     
-                    <a href="activities.php" class="btn-learn-more">learn more</a>
+                    <a href="activities.php" class="btn-learn-more">Learn more</a>
                 </div>
             </div>
         </section>

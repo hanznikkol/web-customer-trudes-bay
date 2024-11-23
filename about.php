@@ -48,13 +48,23 @@ $conn->close();
     <!--swiper link-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="about-skins.css">
+    <link rel="stylesheet" href="about-skins.css?ver=<?php echo time();?>">
     <link rel="stylesheet" href="assets/css/footer-style.css">
     <link rel="website icon" type="png" href="Images/Trudes Bay_Final.png" />
 </head>
 <body>
     <header>
-      <img src="Images/Trudes Bay Strip logo.png" alt="Trudes Bay Beach Resort">
+        <img src="Images/Trudes Bay Strip logo.png" alt="Trudes Bay Beach Resort">
+        <!-- For mobile purpose nav-->
+        <svg class="svg-hamburger" onclick="toggleNavigation()" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.5 42.5H52.5M7.5 30H52.5M7.5 17.5H52.5" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <script>
+            function toggleNavigation() {
+                const navMenu = document.querySelector('nav'); // Select the nav element
+                navMenu.classList.toggle('active'); // Toggle the 'active' class
+            }
+        </script>
     </header>
 
     <nav>

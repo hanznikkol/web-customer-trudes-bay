@@ -215,7 +215,7 @@ footer {
 
 .btn-learn-more {
     display: inline-block;
-    padding: 2px 8px;
+    padding: 0.6rem 1.2rem;
     background-color: #53c659; /* Use your primary button color */
     color: #333;
     font-size: 12px;
@@ -480,7 +480,7 @@ footer {
 .containers {
     width: 80%;
     margin: 0 auto;
-    padding: 70px 0;
+    padding: 70px 60px;
   }
   
   .containers h2 {
@@ -499,8 +499,10 @@ footer {
   
   .contents {
     display: flex;
+    justify-content: center;
     flex-direction: column; /* Change layout to vertical */
     align-items: center; /* Center content horizontally */
+    width: 100%;
   }
   
   .image-sections {
@@ -524,22 +526,23 @@ footer {
   }
   
   .middle-line {
-    width: 250%; /* Make the line horizontal */
+    width: 90%; /* Make the line horizontal */
     height: 1px; /* Set the height to 1px */
     background-color: #333;
   }
   
   .text-sections {
+    width: 100%;
     max-width: 100%; /* Adjust for vertical layout */
     text-align: center; /* Center the text */
   }
   
   .text-sections p {
     font-size: 15px;
-    color: #666;
-    margin: 20px -340px;  
+    color: #666;  
     text-align: center;
-    width: 55rem;
+    padding: 20px 5rem;
+    width: 100%;
   }
   
   .start-intro {
@@ -646,8 +649,11 @@ footer {
     text-align: center; /* Centering the paragraph */
   }
 
+  .svg-hamburger{
+    display: none;
+  }
 
-  /* Media Queries */
+/* Media Queries */
 @media screen and (max-width: 1024px) {
   header, .hero-text h1, .section-intro h2 {
     font-size: 1.2rem;
@@ -662,6 +668,7 @@ footer {
   }
 }
 
+/*Phone and Tablet*/
 @media screen and (max-width: 768px) {
   .hero {
     height: 4in;
@@ -670,14 +677,108 @@ footer {
   .content-wrapper, .image-container, .text-container {
     flex-direction: column;
     text-align: center;
+    padding: 2px 1.2rem;
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+  }
+
+  .text-rightcontainer {
+      order: 2; /* Text comes after image */
   }
 
   .text-container p, .text-rightcontainer p {
     font-size: 0.9rem;
   }
 
+  .text-rightcontainer {
+    padding: 20px 0px;
+    text-align: center;
+  }
+
+  .text-rightcontainer p {
+    text-align: center;
+  }  
+  .text-rightcontainer h3 {
+    text-align: center;
+  }  
+
+
   .card-wrapper {
     margin: 0 20px;
+  }
+
+  .contact-title {
+    padding-top: 5rem;
+  }
+  .contact-title h1 {
+    font-family: 'Georgia', serif;
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .contact-title p {
+    width: 100%;
+    padding: .5rem 2rem;
+    text-align: center; /* Centering the paragraph */
+  }
+
+  /*Text Section*/
+  .middle-line {
+    width: 100%; /* Make the line horizontal */
+    height: 1px; /* Set the height to 1px */
+    background-color: #333;
+  }
+
+  .text-sections {
+    width: 100%; /* Adjust for vertical layout */
+    text-align: center; /* Center the text */
+  }
+  
+  .text-sections p {
+    padding: 20px;
+    width: 100%;
+  }
+
+
+  /*Header*/
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+  }
+
+  /*Navigation*/
+  nav {
+    display: none;
+    flex-direction: column;
+    font-size: 0.9rem;
+  }
+
+  nav.active {
+    display: flex; /* Show navigation when active */
+  }
+
+  nav a {
+    margin: 0.2rem 0;
+  }
+
+  .svg-hamburger {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+  }
+  .svg-hamburger:hover{
+    cursor: pointer;
   }
   
   nav a {
@@ -696,6 +797,23 @@ footer {
   .hero-text p {
     font-size: 0.9rem;
   }
+
+  
+  /*Contact Us*/
+  .container-contact {
+    width: 100%;
+    height: auto;
+    flex-direction: column
+  }
+  
+  .contact-info {
+    width: 100%;
+  }
+
+  .image-section {
+    width: 100%;
+  }
+  
 }
 
 @media screen and (max-width: 480px) {
@@ -715,11 +833,5 @@ footer {
     font-size: 0.75rem;
   }
 
-  .btn-learn-more {
-    font-size: 10px;
-    padding: 5px 10px;
-  }
+  
 }
-
-
- /* 

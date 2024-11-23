@@ -221,3 +221,44 @@ main {
 .hero-controls button:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
+
+.svg-hamburger {
+    display: none;
+    width: 2rem;
+    height: 2rem;
+    
+}
+
+@media (max-width: 768px) {
+     /*Header*/
+     header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem;
+    }
+    /*Navigation*/
+    nav {
+        display: none;
+        flex-direction: column;
+        font-size: 0.9rem;
+    }
+
+    nav.active {
+        display: flex; /* Show navigation when active */
+    }
+
+    nav a {
+        margin: 0.2rem 0;
+    }
+
+    .svg-hamburger {
+        display: block;
+        width: 2rem;
+        height: 2rem;
+        
+    }
+    .svg-hamburger:hover{
+        cursor: pointer;
+    }
+}
