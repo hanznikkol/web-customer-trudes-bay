@@ -487,8 +487,8 @@ form .fields .input-secondfields {
   width: 60%;
   max-width: 700px;
   margin-top: 110px !important;
-  max-height: 700px;
-  overflow: scroll;
+  max-height: 60%;
+  overflow-y: scroll;
 }
 
 .close {
@@ -699,4 +699,15 @@ form .fields .input-secondfields {
     width: 100%;
   }
   
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    background-color: white;
+    margin: 0 auto;
+    padding: 20px;
+    width: 80%;
+    max-height: 70%;
+    overflow-y: scroll;
+  }
 }
