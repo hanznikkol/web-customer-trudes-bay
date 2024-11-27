@@ -22,34 +22,41 @@ backBtn.addEventListener("click", () => form.classList.remove('secActive'));
 
 // Handle Reservation Type Selection
 document.addEventListener("DOMContentLoaded", function () {
-    const reservationTypeRadios = document.querySelectorAll('input[name="reservation-type"]');
-    const cottageSelection = document.querySelector('.cottage-selection');
-    const roomSelection = document.querySelector('.room-selection');
+    const reservationTypeRadios = document.querySelectorAll('input[name="reservation-type[]"]');
     const tentSelection = document.querySelector('.tent-selection');
     const eventSelection = document.querySelector('.event-hall-selection');
-    const cottageSelect = document.getElementById('cottage-select');
-    const roomSelect = document.getElementById('room-select');
+    const cottageSelect = document.querySelector('.cottage-selection');
+    const roomSelect = document.querySelector('.room-selection');
     const eventSelect = document.getElementById('event-select');
 
     // Function to handle radio button changes
     function updateSelections() {
-        cottageSelection.style.display = 'none';
-        roomSelection.style.display = 'none';
-        tentSelection.style.display = 'none';
-        eventSelection.style.display = 'none';
-
-        cottageSelect.selectedIndex = 0;
-        roomSelect.selectedIndex = 0;
-        eventSelect.selectedIndex = 0;
 
         if (document.getElementById('cottage').checked) {
-            cottageSelection.style.display = 'block';
-        } else if (document.getElementById('room').checked) {
-            roomSelection.style.display = 'block';
-        } else if (document.getElementById('event-hall').checked) {
-            eventSelection.style.display = 'block';
-        } else if (document.getElementById('tent').checked) {
+            cottageSelect.style.display = 'block';
+        } 
+        else {
+            cottageSelect.style.display = 'none';
+            document.querySelectorAll('input[name="cottage-type[]"]').forEach(radio => {
+                radio.checked = false;
+            })
+        }
+        
+        if (document.getElementById('room').checked) {
+            roomSelect.style.display = 'block';
+        } 
+        else {
+            roomSelect.style.display = 'none';
+            document.querySelectorAll('input[name="room-type[]"]').forEach(radio => {
+                radio.checked = false;
+            })
+        }
+        
+        if (document.getElementById('tent').checked) {
             tentSelection.style.display = 'block';
+        }
+        else {
+            tentSelection.style.display = 'none';
         }
     }
 

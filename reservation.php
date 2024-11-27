@@ -12,29 +12,108 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contact_number = $_POST["contact_number"];
     $email = $_POST["email"];
     $note = $_POST["note"];
-    if (isset($_POST['reservation-type'])) {
-        $reservation_type = $_POST['reservation-type'];
+
+    $reservation_type = "";
+    $reservation_types = $_POST['reservation-type'] ?? [];
+
+    if (count($reservation_types) > 1) {
+        $reservation_type = "Multiple";
     } else {
-        $reservation_type = ''; // Or some default value if needed
+        $reservation_type = $reservation_types[0]; // Or some default value if needed
     }
-    $select_cottage = $_POST["selected-cottage"] ?? '';
-    $select_room = $_POST["selected-room"] ?? '';
+
+    $select_cottage = $_POST["cottage-type"] ?? [];
+    $select_room = $_POST["room-type"] ?? [];
     $tent_quantity = $_POST["tent_quantity"];
-    $eventhell_select = $_POST["eventhall_select"];
+
     $check_in_date = $_POST["check_in_date"];
     $check_out_date = $_POST["check_out_date"];
     $check_in = $_POST["check_in"];
     $check_out = $_POST["check_out"];
+
     $guests = $_POST["guests"];
     $reference = $_POST["reference"];
+
+    date_default_timezone_set('Asia/Manila');
+    $created_at = date('Y-m-d H:i:s');
+
+    try {
+        // Start transaction
+        mysqli_begin_transaction($conn);
     
-    $sql = "INSERT INTO reservations (first_name, last_name, middle_name, address, contact_number, email, note, reservation_type, select_cottage, tent_quantity, eventhall_select, check_in_date, check_out_date, check_in, check_out, guests, select_room, reference) VALUES ('$first_name', '$last_name', '$middle_name', '$address', '$contact_number', '$email', '$note', '$reservation_type', '$select_cottage', '$tent_quantity','$eventhell_select', '$check_in_date', '$check_out_date', '$check_in', '$check_out', '$guests','$select_room', '$reference')";
+        // Insert reservation
+        $stmt = mysqli_prepare($conn, "INSERT INTO reservations (first_name, last_name, middle_name, address, contact_number, email, note, reservation_type, check_in_date, check_out_date, check_in, check_out, guests, created_at, reference) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        mysqli_stmt_bind_param($stmt, "ssssssssssssiss", $first_name, $last_name, $middle_name, $address, $contact_number, $email, $note, $reservation_type, $check_in_date, $check_out_date, $check_in, $check_out, $guests, $created_at, $reference);
+        mysqli_stmt_execute($stmt);
     
-    if ($conn->query($sql) === TRUE) {
-        echo "New record created successfully";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        if (mysqli_stmt_affected_rows($stmt) <= 0) {
+            throw new Exception("Failed to insert reservation");
+        }
+    
+        // Get the last inserted reservationID
+        $reservationID = mysqli_insert_id($conn);
+    
+        // Prepare bulk insert for reservation_types
+        $stmt = mysqli_prepare($conn, "INSERT INTO reservation_types (reservationID, reservationType, value) VALUES (?, ?, ?)");
+    
+        foreach ($select_cottage as $cottageType) {
+            $type = "Cottage";
+            mysqli_stmt_bind_param($stmt, "iss", $reservationID, $type, $cottageType);
+            mysqli_stmt_execute($stmt);
+    
+            if (mysqli_stmt_affected_rows($stmt) <= 0) {
+                throw new Exception("Failed to insert reservation type for cottage: $cottageType");
+            }
+        }
+
+        foreach ($select_room as $roomType) {
+            $type = "Room";
+            mysqli_stmt_bind_param($stmt, "iss", $reservationID, $type, $roomType);
+            mysqli_stmt_execute($stmt);
+    
+            if (mysqli_stmt_affected_rows($stmt) <= 0) {
+                throw new Exception("Failed to insert reservation type for room: $roomType");
+            }
+        }
+
+        if(in_array("Tent", $reservation_types) && $tent_quantity > 0) {
+            $type = "Tent";
+            mysqli_stmt_bind_param($stmt, "iss", $reservationID, $type, $tent_quantity);
+            mysqli_stmt_execute($stmt);
+    
+            if (mysqli_stmt_affected_rows($stmt) <= 0) {
+                throw new Exception("Failed to insert reservation type for tent");
+            }
+        }
+
+        if(in_array("Event Hall", $reservation_types)) {
+            $type = "Event Hall";
+            mysqli_stmt_bind_param($stmt, "iss", $reservationID, $type, $type);
+            mysqli_stmt_execute($stmt);
+    
+            if (mysqli_stmt_affected_rows($stmt) <= 0) {
+                throw new Exception("Failed to insert reservation type for event hall");
+            }
+        }
+        
+    
+        // Commit transaction
+        mysqli_commit($conn);
+        echo "Reservation is successful, thank you for choosing Bay Trudes Resort!";
+    
+    } catch (Exception $e) {
+        // Rollback transaction on error
+        mysqli_rollback($conn);
+        echo "Transaction failed: " . $e->getMessage();
+    } finally {
+        // Close prepared statement and connection
+        if (isset($stmt)) {
+            mysqli_stmt_close($stmt);
+        }
+        mysqli_close($conn);
     }
+    
+    
 } 
 ?>
 
@@ -144,29 +223,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="reservation-type">
                     <div class="option">
-                        <input type="radio" id="cottage" name="reservation-type" value="Cottage">
+                        <input type="checkbox" id="cottage" name="reservation-type[]" value="Cottage">
                         <label for="cottage">
                             <img src="Images/Resort.jpg" alt="Cottage">
                             Cottage
                         </label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="room" name="reservation-type" value="Room">
+                        <input type="checkbox" id="room" name="reservation-type[]" value="Room">
                         <label for="room">
                             <img src="Images/Resort.jpg" alt="Room">
                             Room
                         </label>
                     </div>
                     <div class="option">
-                        <input type="radio" id="tent" name="reservation-type" value="Tent">
+                        <input type="checkbox" id="tent" name="reservation-type[]" value="Tent">
                         <label for="tent">
-                            <img src="Images/Resort.jpg" alt="Event Hall">
+                            <img src="Images/Resort.jpg" alt="Tent">
                             Tent
                         </label>
                     </div>
 
                     <div class="option">
-                        <input type="radio" id="event-hall" name="reservation-type" value="Event Hall">
+                        <input type="checkbox" id="event-hall" name="reservation-type[]" value="Event Hall">
                         <label for="event-hall">
                             <img src="Images/Resort.jpg" alt="Event Hall">
                             Event Hall
@@ -174,54 +253,97 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
 
-                <!-- Cottage Number Selection -->
-                <div class="cottage-selection">
-                    <label for="cottage-select">Select Cottage No.:</label>
-                    <div>
-                    <select id="cottage-select" name="selected-cottage" class="cottage-select">
-                        <option value="">Select a cottage</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                    </select>
+                <div class="cottage-selection" style="display: none;">
+                    <span class="title">Select a cottage</span>
+                    <div id="cottage-select">
+                        <div class="cottage-select option">
+                            <input type="checkbox" id="cottage1" name="cottage-type[]" value="Cottage 1">
+                            <label for="cottage1">
+                                <img src="Images/Resort.jpg" alt="Event Hall">
+                                Cottage 1
+                            </label>
+                        </div>
+                        <div class="cottage-select option">
+                            <input type="checkbox" id="cottage2" name="cottage-type[]" value="Cottage 2">
+                            <label for="cottage2">
+                                <img src="Images/Resort.jpg" alt="Event Hall">
+                                Cottage 2
+                            </label>
+                        </div>
+                        <div class="cottage-select option">
+                            <input type="checkbox" id="cottage3" name="cottage-type[]" value="Cottage 3">
+                            <label for="cottage3">
+                                <img src="Images/Resort.jpg" alt="Event Hall">
+                                Cottage 3
+                            </label>
+                        </div>
+                        <div class="cottage-select option">
+                            <input type="checkbox" id="cottage4" name="cottage-type[]" value="Cottage 4">
+                            <label for="cottage4">
+                                <img src="Images/Resort.jpg" alt="Event Hall">
+                                Cottage 4
+                            </label>
+                        </div>
+                        <div class="cottage-select option">
+                            <input type="checkbox" id="cottage5" name="cottage-type[]" value="Cottage 5">
+                            <label for="cottage5">
+                                <img src="Images/Resort.jpg" alt="Event Hall">
+                                Cottage 5
+                            </label>
+                        </div>
+                        <div class="cottage-select option">
+                            <input type="checkbox" id="cottage6" name="cottage-type[]" value="Cottage 6">
+                            <label for="cottage6">
+                                <img src="Images/Resort.jpg" alt="Event Hall">
+                                Cottage 6
+                            </label>
+                        </div>
                     </div>
                 </div>
+
 
                 <!-- Room Number Selection -->
                 <div class="room-selection" style="display: none;">
-                    <label for="room-select">Select Room No.:</label>
-                    <div>
-                    <select id="room-select" name="selected-room" class="room-select">
-                        <option value="">Select a room</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
+                    <span class="title">Select a room</span>
+                    <div id="room-select">
+                        <div class="room-select option">
+                            <input type="checkbox" id="room1" name="room-type[]" value="Room 1">
+                            <label for="room1">
+                                <img src="Images/Resort.jpg" alt="Event Hall">
+                                Room 1
+                            </label>
+                        </div>
+                        <div class="room-select option">
+                            <input type="checkbox" id="room2" name="room-type[]" value="Room 2">
+                            <label for="room2">
+                                <img src="Images/Resort.jpg" alt="Event Hall">
+                                Room 2
+                            </label>
+                        </div>
+                        <div class="room-select option">
+                            <input type="checkbox" id="room3" name="room-type[]" value="Room 3">
+                            <label for="room3">
+                                <img src="Images/Resort.jpg" alt="Event Hall">
+                                Room 3
+                            </label>
+                        </div>
+                        <div class="room-select option">
+                            <input type="checkbox" id="room4" name="room-type[]" value="Room 4">
+                            <label for="room4">
+                                <img src="Images/Resort.jpg" alt="Event Hall">
+                                Room 4
+                            </label>
+                        </div>
                     </div>
+                   
                 </div>
-
-                <!-- Tent Quantity Selection -->
+                 <!-- Tent Quantity Selection -->
                 <div class="tent-selection" style="display: none;">
                     <label>Tent Quantity:</label>
                     <div class="tent-options">
-                        <input type="text" class="tent-checkbox" name="tent_quantity" placeholder="Enter Tent Quantity">
+                        <input type="number" min="1" class="tent-checkbox" name="tent_quantity" placeholder="Enter Tent Quantity">
                     </div>
-                </div>
-
-                <!-- Event Hall Quantity Selection -->
-                <div class="event-hall-selection" style="display: none;">
-                    <label>Event Hall Quantity:</label>
-                    <div class="event-hall-options">
-                      <select id="event-select" name="eventhall_select" class="room-select">
-                        <option value="">Select a room</option>
-                        <option value="1">Main Event Hall</option>
-                    </select>
-                    </div>
-                </div>
+                </div>  
 
 
                 <div class="fields">
@@ -243,7 +365,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="input-secondfields">
                       <label>Guest</label>
-                      <input type="number" name="guests" placeholder="₱30 per Guest" id="summary-guests" required oninput="validateGuestInput(this)">
+                      <input type="number" min="1" name="guests" placeholder="₱30 per Guest" id="summary-guests" required oninput="validateGuestInput(this)">
                     </div>
                 </div>
 
@@ -356,7 +478,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     </main>
     <?php include('includes/footer.php'); ?>
-    <script src="reservation-scripts.js"></script>
+    <script src="reservation-scripts.js?ver=<?php echo time(); ?>"></script>
 </body>
 </html>
 

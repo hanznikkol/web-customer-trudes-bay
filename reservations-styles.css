@@ -143,7 +143,8 @@ footer {
     margin: 16px;
     width: 100%;
     height: 60vh;
-    overflow: hidden; 
+    overflow-x: hidden;
+    overflow-y: scroll; 
   }
   
   .container form .form {
@@ -379,7 +380,7 @@ form .fields .input-secondfields {
     cursor: pointer; /* Show cursor pointer */
 }
 
-.option input[type="radio"] {
+.option input[type="checkbox"] {
     display: none; /* Hide the radio button */
 }
 
@@ -401,27 +402,25 @@ form .fields .input-secondfields {
     border-radius: 5px; /* Rounded corners for images */
 }
 
-.option input[type="radio"]:checked + label {
-    border-color: #ffbf00; /* Change border color when selected */
+.option input[type="checkbox"]:checked + label {
+    border: 4px solid #ffbf00; /* Change border color when selected */
     box-shadow: 0 0 10px #7a5c01(17, 0, 255, 0.5); /* Add shadow for effect */
+    transform: scale(1.08);
 }
 
-.option input[type="radio"]:focus + label {
+.option input[type="checkbox"]:focus + label {
     outline: 2px dashed #ffbf00; /* Outline for focused radio button */
 }
-.cottage-selection, .room-selection, .tent-selection {
+.cottage-select, .room-selection, .tent-selection {
     margin-bottom: 20px;
 }
-
-.cottage-options , .room-selection, .tent-selection  {
+.room-selection, .tent-selection  {
     display: flex;
     justify-content: center;
     gap: 10px;
 }
 
-.tent-options input, 
-.cottage-select, 
-.room-select {
+.tent-options input {
     outline: none;
     font-size: 14px;
     font-weight: 400;
@@ -608,6 +607,42 @@ form .fields .input-secondfields {
 
 .svg-hamburger {
   display: none;
+}
+
+
+#cottage-select, #room-select {
+  display: flex;
+  gap: 16px; /* Space between items */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  padding: 8px; /* Optional padding for aesthetics */
+  scroll-snap-type: x mandatory; /* Snap scrolling for better user experience */
+  margin-bottom: 16px;
+}
+
+.cottage-select.option, .room-select.option {
+  flex: 0 0 auto; /* Prevent items from shrinking */
+  width: 150px; /* Adjust width based on your design */
+  text-align: center; /* Center align text and images */
+}
+
+.cottage-select.option img, .room-select.option img {
+  max-width: 100%; /* Ensure images fit within their containers */
+  border-radius: 8px; /* Optional: Add rounded corners to images */
+  margin-bottom: 8px; /* Space between image and label */
+}
+
+/* Optional: Customize scrollbar appearance */
+#cottage-select::-webkit-scrollbar, #room-select::-webkit-scrollbar {
+  height: 8px;
+}
+
+#cottage-select::-webkit-scrollbar-thumb, #room-select::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+#cottage-select::-webkit-scrollbar-track, #room-select::-webkit-scrollbar-track {
+  background: #f0f0f0;
 }
 
 
