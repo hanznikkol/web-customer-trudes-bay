@@ -40,7 +40,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         // Start transaction
         mysqli_begin_transaction($conn);
-    
+
+        // Check first if there is conflicting reservations
+        $values = array_merge($select_cottage, $select_room);
+
+        if(in_array("Event Hall", $reservation_types)){
+            array_push($values, "Event Hall");
+        }
+        $placeholders = implode(',', array_fill(0, count($values), '?'));
+
+        $query = "SELECT check_in_date, check_in, check_out_date, check_out FROM reservations r INNER JOIN reservation_types rt ON r.id = rt.reservationID 
+        WHERE rt.value IN ( $placeholders ) AND (
+            (check_in_date <= ? AND check_out_date >= ?) AND
+            (
+                (CONCAT(check_in_date, ' ', check_in) <= CONCAT(?, ' ', ?) AND CONCAT(check_out_date, ' ', check_out) >= CONCAT(?, ' ', ?))
+            )
+        )
+        GROUP BY r.id;";
+
+        $stmt = mysqli_prepare($conn, $query);
+        $types = str_repeat('s', count($values)) . 'ssssss';
+        // Use call_user_func_array to bind parameters dynamically
+        $params = array_merge($values, [$check_out_date, $check_in_date, $check_out_date, $check_out, $check_in_date, $check_in]);
+        mysqli_stmt_bind_param($stmt, $types, ...$params);
+
+        // Execute the statement
+        mysqli_stmt_execute($stmt);
+        // Fetch results
+        $result = mysqli_stmt_get_result($stmt);
+        $reservationCount = mysqli_num_rows($result);
+        /*while ($row = mysqli_fetch_assoc($result)) {
+            print_r($row);
+        }*/
+
+        if($reservationCount > 0) {
+            throw new Exception("Please select another date, there is an existing reservation on the selected date");
+        }
+                
         // Insert reservation
         $stmt = mysqli_prepare($conn, "INSERT INTO reservations (first_name, last_name, middle_name, address, contact_number, email, note, reservation_type, check_in_date, check_out_date, check_in, check_out, guests, created_at, reference) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         mysqli_stmt_bind_param($stmt, "ssssssssssssiss", $first_name, $last_name, $middle_name, $address, $contact_number, $email, $note, $reservation_type, $check_in_date, $check_out_date, $check_in, $check_out, $guests, $created_at, $reference);
@@ -104,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } catch (Exception $e) {
         // Rollback transaction on error
         mysqli_rollback($conn);
-        echo "Transaction failed: " . $e->getMessage();
+        echo "Reservation failed: " . $e->getMessage();
     } finally {
         // Close prepared statement and connection
         if (isset($stmt)) {
@@ -364,7 +400,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       <input type="time" name="check_out" placeholder="Enter Check-out time" id="summary-check-out" required>
                     </div>
                     <div class="input-secondfields">
-                      <label>Guest</label>
+                      <label id="guest-count-label">No. of Guest</label>
                       <input type="number" min="1" name="guests" placeholder="₱30 per Guest" id="summary-guests" required oninput="validateGuestInput(this)">
                     </div>
                 </div>
@@ -392,62 +428,71 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <span class="close" onclick="closeModal()">&times;</span>
             <h2>Summary of Your Information</h2>
             <div class="modal-details">
-                <h3>Personal Information</h3>
+                <h3 style="margin-bottom: 12px" >Personal Information</h3>
                 <div class="modal-row">
-                    <p><strong>First Name:</strong></p><span id="modal-first-name"></span>
+                    <p>First Name:</p><span id="modal-first-name"></span>
                 </div>
                 <div class="modal-row">
-                    <p><strong>Last Name:</strong></p><span id="modal-last-name"></span>
+                    <p>Last Name:</p><span id="modal-last-name"></span>
                 </div>
                 <div class="modal-row">
-                    <p><strong>Middle Name:</strong></p><span id="modal-middle-name"></span>
+                    <p>Middle Name:</p><span id="modal-middle-name"></span>
                 </div>
                 <div class="modal-row">
-                    <p><strong>Address:</strong></p><span id="modal-address"></span>
+                    <p>Address:</p><span id="modal-address"></span>
                 </div>
                 <div class="modal-row">
-                    <p><strong>Contact Number:</strong></p><span id="modal-contact"></span>
+                    <p>Contact Number:</p><span id="modal-contact"></span>
                 </div>
                 <div class="modal-row">
-                    <p><strong>Email:</strong></p><span id="modal-email"></span>
+                    <p>Email:</p><span id="modal-email"></span>
                 </div>
-                <div class="modal-row">
-                    <p><strong>Note:</strong></p><span id="modal-note"></span>
+                <div style="margin-bottom: 12px" class="modal-row">
+                    <p>Note:</p><span id="modal-note"></span>
                 </div>
 
-                <h3>Reservation Details</h3>
+                <h3 style="margin-bottom: 12px" >Reservation Details</h3>
                 <div class="modal-row">
-                    <p><strong>Reservation Type:</strong></p><span id="modal-reservation-type"></span>
+                    <p>Reservation Type:</p><span id="modal-reservation-type"></span>
                 </div>
                 <div class="modal-row">
-                    <p><strong>Selected Number:</strong></p><span id="modal-selected-number"></span>
+                    <p>Selected:</p><span id="modal-selected"></span>
                 </div>
                 <div class="modal-row">
-                    <p><strong>Check-in Date:</strong></p><span id="modal-Check-indate"></span>
+                    <p>Check-in Date:</p><span id="modal-Check-indate"></span>
                 </div>
                 <div class="modal-row">
-                    <p><strong>Check-out Date:</strong></p><span id="modal-Check-outdate"></span>
+                    <p>Check-out Date:</p><span id="modal-Check-outdate"></span>
                 </div>
                 <div class="modal-row">
-                    <p><strong>Check-in:</strong></p><span id="modal-check-in"></span>
+                    <p>Check-in:</p><span id="modal-check-in"></span>
                 </div>
                 <div class="modal-row">
-                    <p><strong>Check-out:</strong></p><span id="modal-check-out"></span>
+                    <p>Check-out:</p><span id="modal-check-out"></span>
                 </div>
-                <div class="modal-row">
-                    <p><strong>Guests:</strong></p><span id="modal-guests"></span>
+                <div style="margin-bottom: 12px" class="modal-row">
+                    <p>Guests:</p><span id="modal-guests"></span>
                 </div>
 
                 <!-- QR Code and Payment Information -->
-                <h3>Payment Information</h3>
+                <h3 style="margin-bottom: 12px">Payment Information</h3>
                 <div class="modal-row">
-                    <p><strong>Scan to Pay (QR Code):</strong></p>
+                    <p>Reservation Price:</p><span id="modal-reservation-price"></span>
+                </div>
+                <div class="modal-row">
+                    <p>Guest Price:</p><span id="modal-guest-price"></span>
+                </div>
+                <div class="modal-row">
+                    <p>Total Price:</p><span id="modal-total-price"></span>
+                </div>
+                <div class="modal-row">
+                    <p>Scan to Pay (QR Code):</p>
                     <div class="qr-container">
                         <img src="Images/gcash.jpg" alt="QR Code" id="qr-code-image">
                     </div>
                 </div>
                 <div class="modal-row">
-                    <p><strong>Contact Number for Payment:</strong></p><span>09156847296</span>
+                    <p>Contact Number for Payment:</p><span>09156847296</span>
                 </div>
 
                 <div class="notice-text">
@@ -457,7 +502,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <!-- Gcash Reference Number Input -->
                 <div class="input-fields">
                     <label for="summe">Gcash Reference Number</label>
-                    <input type="number" id="summe" name="reference" placeholder="Please enter the reference number" required>
+                    <input type="number" id="modal-reference-number" name="reference" placeholder="Please enter the reference number" required>
                 </div>
 
                 <!-- Buttons -->

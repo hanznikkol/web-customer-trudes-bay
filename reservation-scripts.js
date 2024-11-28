@@ -18,8 +18,58 @@ nextBtn.addEventListener("click", () => {
     }
 });
 
-backBtn.addEventListener("click", () => form.classList.remove('secActive'));
+let maxGuests = 0;
+function calculateMaxGuests() {
+    maxGuests = 0
+    reservationPrice = 0;
+    const checkboxes = document.querySelectorAll('input[name="reservation-type[]"]:checked');
+    const values = [];
+    checkboxes.forEach(checkbox => values.push(checkbox.value));
 
+    if(values.includes("Cottage")) {
+        const cottages = document.querySelectorAll('input[name="cottage-type[]"]:checked');
+        cottages.forEach(cottage => {
+            maxGuests += 10
+            reservationPrice += 250
+        })
+    }
+    if(values.includes("Room")) {
+        const rooms = document.querySelectorAll('input[name="room-type[]"]:checked');
+        rooms.forEach(room => {
+            maxGuests += 4
+            reservationPrice += 350
+        } )
+    }
+    if(values.includes("Tent")) {
+        const tent = document.querySelector('.tent-checkbox');
+        maxGuests += (4 * tent.value)
+        reservationPrice += (100 * tent.value)
+    }
+    if(values.includes("Event Hall")) {
+        maxGuests += 25
+        reservationPrice += 400
+    }
+
+    const guestInput = document.getElementById("summary-guests")
+
+    guestInput.max = maxGuests
+    document.getElementById("guest-count-label").innerText = `No. of Guests (Maximum of ${maxGuests})`
+}
+
+let reservationPrice = 0;
+let guestPrice = 0;
+
+function calculatePrice() {
+    const guestInput = document.getElementById("summary-guests")
+    guestPrice = 0;
+    guestPrice = (guestInput.value * 30)
+}
+
+document.getElementById("summary-guests").addEventListener('change', calculatePrice)
+backBtn.addEventListener("click", () => form.classList.remove('secActive'));
+document.querySelectorAll('input[name="room-type[]"], input[name="cottage-type[]"], .tent-checkbox').forEach(radio => {
+    radio.addEventListener('change', calculateMaxGuests);
+})
 // Handle Reservation Type Selection
 document.addEventListener("DOMContentLoaded", function () {
     const reservationTypeRadios = document.querySelectorAll('input[name="reservation-type[]"]');
@@ -58,6 +108,8 @@ document.addEventListener("DOMContentLoaded", function () {
         else {
             tentSelection.style.display = 'none';
         }
+        calculateMaxGuests()
+
     }
 
     // Add event listeners to the radio buttons
@@ -66,9 +118,60 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+function validateSecondForm() {
+    var AllSecondInput = document.querySelectorAll(`.second input:not(input[type="checkbox"]):not(.tent-checkbox)`);
+    for(let input of AllSecondInput) {
+        if (input.value === "") {
+            return false
+        }
+    };
+
+    const checkboxes = document.querySelectorAll('input[name="reservation-type[]"]:checked');
+    const values = [];
+    checkboxes.forEach(checkbox => values.push(checkbox.value));
+    if(values.length <= 0) return false
+
+    if(values.includes("Cottage")) {
+        const cottages = document.querySelectorAll('input[name="cottage-type[]"]:checked');
+        if(cottages.length <= 0) return false
+    }
+    if(values.includes("Room")) {
+        const rooms = document.querySelectorAll('input[name="room-type[]"]:checked');
+        if(rooms.length <= 0) return false
+    }
+    if(values.includes("Tent")) {
+        const tent = document.querySelector('.tent-checkbox');
+        if(tent.value <= 0) return false
+    }
+
+    return true
+}
+
 // Open Modal with updated fields
 function openModal(event) {
+    
     event.preventDefault();  // Prevent default form submission
+    if(!validateSecondForm()) {
+        alert("Please fill up the required fields")
+        return
+    }
+    
+    const guestCount = document.getElementById("summary-guests").value
+    if(guestCount > maxGuests) {
+        alert("Guest count exceeded the maximum amount")
+        return;
+    }
+
+    // Validate if selected check out is later than check in
+    const checkindate = document.getElementById("summary-checkindate").value; 
+    const checkoutdate = document.getElementById("summary-checkoutdate").value; 
+    const checkin = document.getElementById("summary-check-in").value; 
+    const checkout = document.getElementById("summary-check-out").value;
+
+    if(!isCheckoutLater(checkindate, checkoutdate, checkin, checkout)) {
+        alert("Check out date & time must be later than check in")
+        return;
+    };
 
     const modal = document.getElementById("summary-modal");
     modal.style.display = "block";
@@ -82,29 +185,58 @@ function openModal(event) {
     document.getElementById("modal-email").innerText = document.getElementById("summary-email").value || "N/A";
     document.getElementById("modal-note").innerText = document.getElementById("summary-note").value || "N/A";
 
-    const selectedType = document.querySelector('input[name="reservation-type"]:checked');
-    document.getElementById("modal-reservation-type").innerText = selectedType ? selectedType.value : "None selected";
+    let reservationType = "N/A"
 
-    let selectedNumber = "Not selected";
-    if (selectedType) {
-        if (selectedType.value === "Cottage") {
-            selectedNumber = document.getElementById('cottage-select').value || "Not selected";
-        } else if (selectedType.value === "Room") {
-            selectedNumber = document.getElementById('room-select').value || "Not selected";
-        } else if (selectedType.value === "Event Hall") {
-            selectedNumber = document.getElementById('event-select').value || "Not selected";
-        } else if (selectedType.value === "Tent") {
-            selectedNumber = document.querySelector(".tent-checkbox").value || "Not selected";
-        }
+    //Reservation Type
+    const checkboxes = document.querySelectorAll('input[name="reservation-type[]"]:checked');
+    const values = [];
+    checkboxes.forEach(checkbox => values.push(checkbox.value));
+    if(values.length > 1) reservationType = "Multiple"
+    else reservationType = values[0]
+        
+    document.getElementById("modal-reservation-type").innerText = reservationType
+
+    const modalSelected = document.getElementById("modal-selected")
+    modalSelected.innerHTML = '';
+    if(values.includes("Cottage")) {
+        const cottages = document.querySelectorAll('input[name="cottage-type[]"]:checked');
+        cottages.forEach(cottage => {
+            modalSelected.innerHTML += `<p>${cottage.value} (₱250)</p>`
+        })
     }
-    document.getElementById("modal-selected-number").innerText = selectedNumber;
+    if(values.includes("Room")) {
+        const rooms = document.querySelectorAll('input[name="room-type[]"]:checked');
+        rooms.forEach(room => {
+            modalSelected.innerHTML += `<p>${room.value} (₱350)</p>`
+        })
+    }
+    if(values.includes("Tent")) {
+        const tent = document.querySelector('.tent-checkbox');
+        modalSelected.innerHTML += `<p>${tent.value} Tents (₱100 each)</p>`
+    }
+    if(values.includes("Event Hall")) {
+        modalSelected.innerHTML += `<p>Event Hall (₱400)</p>`
+    }
 
     // Dates and times
-    document.getElementById("modal-Check-indate").innerText = document.getElementById("summary-checkindate").value || "N/A";
-    document.getElementById("modal-Check-outdate").innerText = document.getElementById("summary-checkoutdate").value || "N/A";
-    document.getElementById("modal-check-in").innerText = document.getElementById("summary-check-in").value || "N/A";
-    document.getElementById("modal-check-out").innerText = document.getElementById("summary-check-out").value || "N/A";
-    document.getElementById("modal-guests").innerText = document.getElementById("summary-guests").value || "N/A";
+    document.getElementById("modal-Check-indate").innerText = checkindate || "N/A";
+    document.getElementById("modal-Check-outdate").innerText = checkoutdate || "N/A";
+    document.getElementById("modal-check-in").innerText = checkin || "N/A";
+    document.getElementById("modal-check-out").innerText = checkout || "N/A";
+    document.getElementById("modal-guests").innerText = `${guestCount} (₱30 each)` || "N/A";
+
+    document.getElementById("modal-reservation-price").innerText = `₱${reservationPrice}`
+    document.getElementById("modal-guest-price").innerText = `₱${guestPrice}`
+    document.getElementById("modal-total-price").innerHTML= `<strong>₱${guestPrice + reservationPrice}</strong>`
+}
+
+function isCheckoutLater(checkindate, checkoutdate, checkin, checkout) {
+    // Combine date and time into Date objects
+    const checkinDateTime = new Date(`${checkindate}T${checkin}`);
+    const checkoutDateTime = new Date(`${checkoutdate}T${checkout}`);
+
+    // Return true if checkout is later, false otherwise
+    return checkoutDateTime > checkinDateTime;
 }
 
 // Close Modal
@@ -121,6 +253,12 @@ window.onclick = function(event) {
 };
 
 function confirmReservation() {
+    const refNumber = document.getElementById("modal-reference-number").value
+    if(refNumber == "" || refNumber == null || refNumber == undefined) {
+        alert("GCash Reference number is required")
+        return;
+    }
+        
     document.getElementById("reservation_form").submit();
     closeModal(); // Close the modal after confirming
 }
@@ -153,4 +291,3 @@ function validateName(input) {
 }
 
 // Add event listener to open-modal button
-document.getElementById("open-modal").addEventListener("click", openModal);

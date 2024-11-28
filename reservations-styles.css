@@ -367,12 +367,6 @@ form .fields .input-secondfields {
     margin-right: 14px;
   }
 
-  .reservation-type {
-    display: flex;
-    justify-content: space-around; /* Adjust space between options */
-    margin: 20px 0; /* Add margin for spacing */
-}
-
 .option {
     display: flex;
     flex-direction: column; /* Align label and image vertically */
@@ -411,7 +405,7 @@ form .fields .input-secondfields {
 .option input[type="checkbox"]:focus + label {
     outline: 2px dashed #ffbf00; /* Outline for focused radio button */
 }
-.cottage-select, .room-selection, .tent-selection {
+.room-selection, .tent-selection {
     margin-bottom: 20px;
 }
 .room-selection, .tent-selection  {
@@ -479,15 +473,24 @@ form .fields .input-secondfields {
 }
 
 .modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: white;
-  margin: 15% auto;
   padding: 20px;
   border-radius: 10px;
   width: 60%;
   max-width: 700px;
-  margin-top: 110px !important;
-  max-height: 60%;
+  max-height: 80%;
   overflow-y: scroll;
+}
+
+#modal-selected {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #4CAF50;
 }
 
 .close {
@@ -610,7 +613,7 @@ form .fields .input-secondfields {
 }
 
 
-#cottage-select, #room-select {
+.reservation-type, #cottage-select, #room-select {
   display: flex;
   gap: 16px; /* Space between items */
   overflow-x: auto; /* Enable horizontal scrolling */
@@ -619,29 +622,29 @@ form .fields .input-secondfields {
   margin-bottom: 16px;
 }
 
-.cottage-select.option, .room-select.option {
+.option, .cottage-select.option, .room-select.option {
   flex: 0 0 auto; /* Prevent items from shrinking */
   width: 150px; /* Adjust width based on your design */
   text-align: center; /* Center align text and images */
 }
 
-.cottage-select.option img, .room-select.option img {
+.option img, .cottage-select.option img, .room-select.option img {
   max-width: 100%; /* Ensure images fit within their containers */
   border-radius: 8px; /* Optional: Add rounded corners to images */
   margin-bottom: 8px; /* Space between image and label */
 }
 
 /* Optional: Customize scrollbar appearance */
-#cottage-select::-webkit-scrollbar, #room-select::-webkit-scrollbar {
+.reservation-type::-webkit-scrollbar, #cottage-select::-webkit-scrollbar, #room-select::-webkit-scrollbar {
   height: 8px;
 }
 
-#cottage-select::-webkit-scrollbar-thumb, #room-select::-webkit-scrollbar-thumb {
+.reservation-type::-webkit-scrollbar-thumb, #cottage-select::-webkit-scrollbar-thumb, #room-select::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 4px;
 }
 
-#cottage-select::-webkit-scrollbar-track, #room-select::-webkit-scrollbar-track {
+.reservation-type::-webkit-scrollbar-track, #cottage-select::-webkit-scrollbar-track, #room-select::-webkit-scrollbar-track {
   background: #f0f0f0;
 }
 
@@ -712,12 +715,6 @@ form .fields .input-secondfields {
   }
 
   /*Second Form*/
-  .reservation-type {
-    overflow-x: auto;
-  }
-  .option {
-    margin: 0px .6rem;
-  }
   .container form .fields { 
     flex-direction: column;
     align-items: flex-start;
