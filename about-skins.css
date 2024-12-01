@@ -674,6 +674,13 @@ footer {
     height: 4in;
   }
 
+  .containers {
+
+    width: 100%;
+    margin: 0 auto;
+    padding: 70px 1rem;
+  }
+
   .content-wrapper, .image-container, .text-container {
     flex-direction: column;
     text-align: center;
@@ -689,6 +696,8 @@ footer {
   }
 
   .text-rightcontainer {
+      width: 100%;
+
       order: 2; /* Text comes after image */
   }
 
@@ -697,7 +706,8 @@ footer {
   }
 
   .text-rightcontainer {
-    padding: 20px 0px;
+    width: 100%;
+    padding: 20px 20px;
     text-align: center;
   }
 

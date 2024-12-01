@@ -70,8 +70,6 @@
             </form>
 
             <div id="selected-amenities" class="amenities-container"></div>
-
-            </div>
         </div>
     </main>
     <?php include('includes/footer.php'); ?>
